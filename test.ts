@@ -17,7 +17,7 @@ class LoginUserDto {
   public someData1: string;
 }
 
-// для логина нужно name и email и password и еще прилетают какие то спец поля someData2
+// для создания логина нужно name и email и password и еще прилетают какие то спец поля someData2
 class CreateUserDto {
   public name: string;
   public email: string;
