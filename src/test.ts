@@ -1,8 +1,5 @@
 
 // Вариант 1: С Интерфейсом User
-import {prop} from '@typegoose/typegoose';
-import {UserModel} from './src/utils/modules/user/user.entity';
-
 interface User {
   name: string,
   email: string,
@@ -26,16 +23,9 @@ class CreateUserDto {
 }
 
 class UserEntity1 implements User {
-  @prop({required: true})
   public name: string;
-
-  @prop({unique: true, required: true})
   public email: string;
-
-  @prop({required: true})
   public password: string;
-
-  @prop({required: false})
   public age: number;
 
   constructor(userData: User) {
@@ -46,8 +36,8 @@ class UserEntity1 implements User {
   }
 }
 
-class DefaultUserService {
-  create(dto: CreateUserDto) {
+class DefaultUserService1 {
+  static create(dto: CreateUserDto) {
     const userEntityData: User = {
       name: dto.name,
       email: dto.email,
@@ -55,24 +45,35 @@ class DefaultUserService {
       age: 0
     };
     const user = new UserEntity1(userEntityData);
-
-    return UserModel.create(user);
+    console.log(user);
   }
 }
 
-// ---------------------------------------------
+// есть дто с данными
+const createUserDto1 = {
+  name: 'Alice',
+  email: 'alice@example.com',
+  password: 'alice2024',
+  someData2: 'дополнительные данные'
+};
+
+DefaultUserService1.create(createUserDto1);
+/*
+  UserEntity1 {
+    name: 'Alice',
+    email: 'alice@example.com',
+    password: 'alice2024',
+    age: 0
+  }
+*/
+
+
+// -----------------------------------------------------------
 // Вариант 2: Без Интерфейса User
 class UserEntity2 {
-  @prop({required: true})
   public name: string;
-
-  @prop({unique: true, required: true})
   public email: string;
-
-  @prop({required: true})
   public password: string;
-
-  @prop({required: false})
   public age: number;
 
   constructor(name: string, email: string, password: string, age: number = 0) {
@@ -83,11 +84,27 @@ class UserEntity2 {
   }
 }
 
-class DefaultUserService {
-  create(dto: CreateUserDto): Promise<UserEntity2> {
+class DefaultUserService2 {
+  static create(dto: CreateUserDto): void {
     const { name, email, password } = dto;
     const user = new UserEntity2(name, email, password);
-
-    return UserModel.create(user);
+    console.log(user);
   }
 }
+
+// есть дто с данными
+const createUserDto2 = {
+  name: 'Alice',
+  email: 'alice@example.com',
+  password: 'alice2024',
+  someData2: 'дополнительные данные'
+};
+DefaultUserService2.create(createUserDto2);
+/*
+  UserEntity2 {
+    name: 'Alice',
+    email: 'alice@example.com',
+    password: 'alice2024',
+    age: 0
+  }
+ */
